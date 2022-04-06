@@ -9,9 +9,9 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(express.static(__dirname+ "static"));
+app.use(express.static(__dirname + "/static"));
 
 app.listen(PORT, function() {
     console.log("Serving static on 81");
-    console.log(__dirname + "static");
+    console.log(__dirname + "/static");
 });
