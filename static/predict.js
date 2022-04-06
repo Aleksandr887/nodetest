@@ -1,4 +1,4 @@
-$("#image-selector").change(function () {
+/*$("#image-selector").change(function () {
     let reader = new FileReader();
     reader.onload = function () {
         let dataURL = reader.result;
@@ -7,7 +7,7 @@ $("#image-selector").change(function () {
     }
     let file = $("#image-selector").prop("files")[0];
     reader.readAsDataURL(file);
-}); 
+}); */
 
 let model;
 (async function() {
