@@ -12,7 +12,7 @@
 let model;
 (async function() {
     model = await tf.loadLayersModel('mobile_net/model.json');
-    console.log(model.summary())
+    alert(model.summary());
 })();
 
 $("#predict-button").click(async function () {
