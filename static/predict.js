@@ -20,7 +20,7 @@ $("#predict-button").click(async function () {
         alert("1");
         let selectedFile = document.getElementById("image-selector").value
         var img1 = new Image(); // TODO
-        img1.src = selectedFile;
+        img1.src = "static/55.png";
         alert(img1.src);
 
         let tensor = tf.browser.fromPixels(img1).resizeNearestNeighbor([224, 224]).toFloat()
