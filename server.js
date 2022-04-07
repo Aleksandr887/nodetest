@@ -1,44 +1,58 @@
-import * as tf from '@tensorflow/tfjs';
-import express from 'express';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import '@tensorflow/tfjs-node';
+const tf = require('@tensorflow/tfjs')
+const mobilenet = require('@tensorflow-models/mobilenet');
+require('@tensorflow/tfjs-node')
+require('tfjs-node-save');
 
-// let tf  = require("@tensorflow/tfjs");
-// let express = require("express");
-// let path = require('path')
-// require('@tensorflow/tfjs-node');
+const fs = require('fs');
+const jpeg = require('jpeg-js');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-let app = express();
+const NUMBER_OF_CHANNELS = 3
 
-const PORT = process.env.PORT || 80
-
-app.use(function(req, res, next) {
-    console.log(`${new Date()} - ${req.method} request for ${req.url}`);
-    next();
-});
-
-app.use(express.static(__dirname + "/static"));
-
-app.listen(PORT, function() {
-    console.log(PORT);
-    console.log('C:/Users/lipuc/Desktop/test_prog/TensorFlowJS/static/mobile_net/model.json');
-});
-
-class AI {
-
-    compile() {
-        const model = tf.loadLayersModel('file://static/mobile_net/model.json');
-        console.log("model succses");
-    }
-
-    run() {
-
-    }
-
+const readImage = path => {
+  const buf = fs.readFileSync(path)
+  const pixels = jpeg.decode(buf, true)
+  return pixels
 }
 
-const ai = new AI();
-ai.compile();
+const imageByteArray = (image, numChannels) => {
+  const pixels = image.data
+  const numPixels = image.width * image.height;
+  const values = new Int32Array(numPixels * numChannels);
+
+  for (let i = 0; i < numPixels; i++) {
+    for (let channel = 0; channel < numChannels; ++channel) {
+      values[i * numChannels + channel] = pixels[i * 4 + channel];
+    }
+  }
+
+  return values
+}
+
+const imageToInput = (image, numChannels) => {
+  const values = imageByteArray(image, numChannels)
+  const outShape = [image.height, image.width, numChannels];
+  const input = tf.tensor3d(values, outShape, 'int32');
+
+  return input
+}
+
+const loadModel = async path => {
+  const mn = new mobilenet.MobileNet(1, 1);
+  mn.path = `file://${path}`
+  await mn.load()
+  return mn
+}
+
+const classify = async (model, path) => {
+  const image = readImage(path)
+  const input = imageToInput(image, NUMBER_OF_CHANNELS)
+
+  const  mn_model = await loadModel(model)
+  const predictions = await mn_model.classify(input)
+
+  console.log('classification results:', predictions)
+}
+
+if (process.argv.length !== 4) throw new Error('incorrect arguments: node script.js <MODEL> <IMAGE_FILE>')
+
+classify(process.argv[2], process.argv[3])

@@ -1,7 +1,6 @@
 {
     "name": "neuroserver",
     "version": "1.0.0",
-    "type": "module",
     "description": "",
     "main": "server.js",
     "scripts": {
@@ -11,6 +10,14 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "express": "^4.17.3"
+        "@andreekeberg/imagedata": "^1.0.2",
+        "@tensorflow-models/mobilenet": "^0.2.2",
+        "@tensorflow/tfjs-node": "^3.15.0",
+        "canvas": "^2.9.1",
+        "express": "^4.17.3",
+        "fs": "^0.0.1-security",
+        "image-js": "^0.33.2",
+        "jpeg-js": "^0.4.3",
+        "tfjs-node-save": "^0.0.2"
     }
 }
