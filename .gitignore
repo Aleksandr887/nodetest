@@ -1,3 +1,5 @@
 node_modules
 .idea
 mobile_net
+.package.json
+.package-lock.json

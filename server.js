@@ -2,10 +2,12 @@ import * as tf from '@tensorflow/tfjs';
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import '@tensorflow/tfjs-node';
 
-//let tf  = require("@tensorflow/tfjs");
-//let express = require("express");
-//let path = require('path')
+// let tf  = require("@tensorflow/tfjs");
+// let express = require("express");
+// let path = require('path')
+// require('@tensorflow/tfjs-node');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,7 +30,7 @@ app.listen(PORT, function() {
 class AI {
 
     compile() {
-        const model = tf.loadLayersModel('https://aqueous-caverns-68838.herokuapp.com/static/mobile_net/model.json');
+        const model = tf.loadLayersModel('file://static/mobile_net/model.json');
         console.log("model succses");
     }
 
